@@ -37,7 +37,16 @@
 
 + (void)performDefaultActionForTappingURL:(NSURL *)URL
 {
-    [[UIApplication sharedApplication] openURL:URL];
+    if (@available(iOS 10.0, *)) {
+        [[UIApplication sharedApplication] openURL:URL
+                                           options:@{}
+                                 completionHandler:nil];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [[UIApplication sharedApplication] openURL:URL];
+#pragma clang diagnostic pop
+    }
 }
 
 + (void)performDefaultActionForTappingHashtag:(TWTRTweetHashtagEntity *)hashtag
@@ -81,16 +90,43 @@
             completionHandler:^(BOOL success) {
                 if (success == NO) {
                     // Open on web
-                    [[UIApplication sharedApplication] openURL:webURL];
+                    if (@available(iOS 10.0, *)) {
+                        [[UIApplication sharedApplication] openURL:webURL
+                                                           options:@{}
+                                                 completionHandler:nil];
+                    } else {
+                #pragma clang diagnostic push
+                #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                        [[UIApplication sharedApplication] openURL:webURL];
+                #pragma clang diagnostic pop
+                    }
                 }
             }];
     } else {
         if ([[UIApplication sharedApplication] canOpenURL:deepLinkURL]) {
             // Deep-link
-            [[UIApplication sharedApplication] openURL:deepLinkURL];
+            if (@available(iOS 10.0, *)) {
+                [[UIApplication sharedApplication] openURL:deepLinkURL
+                                                   options:@{}
+                                         completionHandler:nil];
+            } else {
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                [[UIApplication sharedApplication] openURL:deepLinkURL];
+        #pragma clang diagnostic pop
+            }
         } else {
             // Open on web
-            [[UIApplication sharedApplication] openURL:webURL];
+            if (@available(iOS 10.0, *)) {
+                [[UIApplication sharedApplication] openURL:webURL
+                                                   options:@{}
+                                         completionHandler:nil];
+            } else {
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                [[UIApplication sharedApplication] openURL:webURL];
+        #pragma clang diagnostic pop
+            }
         }
     }
 }

@@ -41,7 +41,14 @@
     self = [super init];
     if (self) {
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkDidFire:)];
-        _displayLink.frameInterval = 20;
+        if (@available(iOS 10.0, *)) {
+            _displayLink.preferredFramesPerSecond = 20;
+        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            _displayLink.frameInterval = 20;
+#pragma clang diagnostic pop
+        }
         [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
     }
     return self;

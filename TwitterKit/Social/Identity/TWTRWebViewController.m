@@ -101,7 +101,16 @@
     if (![self whitelistedDomain:request]) {
         // Open in Safari if request is not whitelisted
         NSLog(@"Opening link in Safari browser, as the host is not whitelisted: %@", request.URL);
-        [[UIApplication sharedApplication] openURL:request.URL];
+        if (@available(iOS 10.0, *)) {
+            [[UIApplication sharedApplication] openURL:request.URL
+                                               options:@{}
+                                     completionHandler:nil];
+        } else {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            [[UIApplication sharedApplication] openURL:request.URL];
+    #pragma clang diagnostic pop
+        }
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
     }

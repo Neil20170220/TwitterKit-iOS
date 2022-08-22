@@ -192,15 +192,15 @@ NSString *const TWTRGenericKeychainItemErrorDomain = @"TWTRGenericKeychainItemEr
     return [self storeInKeychainReplacingExisting:YES error:error];
 }
 
-- (BOOL)storeInKeychainReplacingExisting:(BOOL)replaceExisting error:(NSError **)error;
+- (BOOL)storeInKeychainReplacingExisting:(BOOL)replaceExisting error:(NSError **)error
 {
     __block BOOL success = YES;
-
+    __block NSError *innerError = nil;
     [[self class] synchronouslyAccessKeychain:^{
 
         if (replaceExisting) {
             NSError *deleteError = nil;
-            if (![self unsynchronizedRemoveFromKeychain:error]) {
+            if (![self unsynchronizedRemoveFromKeychain:&innerError]) {
                 NSLog(@"Could not delete existing item: %@", deleteError);  // TODO: Update this.
             }
         }
@@ -209,9 +209,7 @@ NSString *const TWTRGenericKeychainItemErrorDomain = @"TWTRGenericKeychainItemEr
         OSStatus status = [TWTRSecItemWrapper secItemAdd:(__bridge CFDictionaryRef)query withResult:NULL];
 
         if (status != errSecSuccess) {
-            if (error) {
-                *error = [[self class] errorWithStatus:status];
-            }
+            innerError = [[self class] errorWithStatus:status];
             success = NO;
         } else {
             // Fetch from the keychain so we can guarantee we have the same timestamp that is assigned by the keychain
@@ -219,6 +217,10 @@ NSString *const TWTRGenericKeychainItemErrorDomain = @"TWTRGenericKeychainItemEr
             self->_lastSavedDate = fetchedItem.lastSavedDate;
         }
     }];
+    
+    if (error != NULL) {
+        *error = innerError;
+    }
 
     return success;
 }
@@ -226,10 +228,15 @@ NSString *const TWTRGenericKeychainItemErrorDomain = @"TWTRGenericKeychainItemEr
 - (BOOL)removeFromKeychain:(NSError **)error
 {
     __block BOOL success = YES;
-
+    __block NSError *innerError = nil;
+    
     [[self class] synchronouslyAccessKeychain:^{
-        success = [self unsynchronizedRemoveFromKeychain:error];
+        success = [self unsynchronizedRemoveFromKeychain:&innerError];
     }];
+    
+    if (error != NULL) {
+        *error = innerError;
+    }
 
     return success;
 }
@@ -237,21 +244,26 @@ NSString *const TWTRGenericKeychainItemErrorDomain = @"TWTRGenericKeychainItemEr
 + (BOOL)removeAllItemsForQuery:(TWTRGenericKeychainQuery *)query error:(NSError **)error;
 {
     __block BOOL success = YES;
+    __block NSError *innerError = nil;
 
     [[self class] synchronouslyAccessKeychain:^{
-        NSArray *items = [self unsynchronizedStoredItemsMatchingQuery:query error:error];
+        NSArray *items = [self unsynchronizedStoredItemsMatchingQuery:query error:&innerError];
 
         if (!items) {
             success = NO;
         }
 
         for (TWTRGenericKeychainItem *item in items) {
-            if (![item unsynchronizedRemoveFromKeychain:error]) {
+            if (![item unsynchronizedRemoveFromKeychain:&innerError]) {
                 success = NO;
                 break;
             }
         }
     }];
+    
+    if (error != NULL) {
+        *error = innerError;
+    }
 
     return success;
 }
@@ -289,10 +301,15 @@ NSString *const TWTRGenericKeychainItemErrorDomain = @"TWTRGenericKeychainItemEr
 + (NSArray *)storedItemsMatchingQuery:(TWTRGenericKeychainQuery *)query error:(NSError **)error
 {
     NSArray *__block items = nil;
+    __block NSError *innerError = nil;
 
     [[self class] synchronouslyAccessKeychain:^{
-        items = [self unsynchronizedStoredItemsMatchingQuery:query error:error];
+        items = [self unsynchronizedStoredItemsMatchingQuery:query error:&innerError];
     }];
+    
+    if (error != NULL) {
+        *error = innerError;
+    }
 
     return items;
 }

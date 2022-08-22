@@ -670,7 +670,7 @@ static id<TWTRSessionStore_Private> TWTRSharedSessionStore = nil;
 {
     NSString *mediaID;
     void (^setError)(NSError *) = ^(NSError *errorToSet) {
-        if (error) {
+        if (error != NULL) {
             *error = errorToSet;
         }
     };

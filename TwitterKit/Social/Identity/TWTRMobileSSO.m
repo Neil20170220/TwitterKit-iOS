@@ -55,7 +55,16 @@
 
     } else {
         if ([[UIApplication sharedApplication] canOpenURL:twitterAuthURL]) {
-            [[UIApplication sharedApplication] openURL:twitterAuthURL];
+            if (@available(iOS 10.0, *)) {
+                [[UIApplication sharedApplication] openURL:twitterAuthURL
+                                                   options:@{}
+                                         completionHandler:nil];
+            } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                [[UIApplication sharedApplication] openURL:twitterAuthURL];
+#pragma clang diagnostic pop
+            }
         } else {
             completion(nil, [TWTRErrors noTwitterAppError]);
         }

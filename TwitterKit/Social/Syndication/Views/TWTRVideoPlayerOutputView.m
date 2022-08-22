@@ -351,7 +351,7 @@ NSString *videoGravityForAspectRatio(TWTRVideoPlayerAspectRatio aspectRatio)
     CMTimeScale timeScale = MAX(self.playerItem.currentTime.timescale, minimumTimeScale);
     CMTime time = CMTimeMakeWithSeconds(position, timeScale);
 
-    [self.playerItem seekToTime:time];
+    [self.playerItem seekToTime:time completionHandler:nil];
 }
 
 - (NSTimeInterval)elapsedTime
