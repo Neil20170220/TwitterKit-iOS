@@ -49,7 +49,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  - resizing/cropping/decoding/sampling for quality
  *
  *  @param key        ID of the image
- *  @param completion completion block to call when it's done fetching
  */
 - (nullable UIImage *)fetchImageForKey:(NSString *)key;
 
@@ -93,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return new instance of cacheOrNil at the given path
  */
-- (nullable instancetype)initWithPath:(NSString *)path maxSize:(NSUInteger)size;
+- (nullable instancetype)initWithPath:(NSString *)path maxSize:(NSUInteger)maxSize;
 
 @end
 

@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @param targetFrame the frame that the view will be transition to
  * @param completion a block to invoke when the transition has completed.
  */
-- (instancetype)initWithTransitioningView:(UIView *)transitionView initialFrame:(CGRect)frame targetFrame:(CGRect)targetFrame completion:(void (^)(void))completion;
+- (instancetype)initWithTransitioningView:(UIView *)transitionView initialFrame:(CGRect)initialFrame targetFrame:(CGRect)targetFrame completion:(void (^)(void))completion;
 
 @end
 

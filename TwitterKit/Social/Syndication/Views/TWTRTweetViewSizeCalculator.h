@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return the calculated height of the Tweet view
  */
-+ (CGFloat)heightForTweet:(TWTRTweet *)tweet style:(TWTRTweetViewStyle)style fittingWidth:(CGFloat)width showingActions:(BOOL)showActions;
++ (CGFloat)heightForTweet:(TWTRTweet *)tweet style:(TWTRTweetViewStyle)style fittingWidth:(CGFloat)fittingWidth showingActions:(BOOL)showingActions;
 
 @end
 

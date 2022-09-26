@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return A fully instantiated proxy for the associating tableView proxying the specified selectors.
  */
-- (instancetype)initWithTableView:(UITableView *)tableView selectorsToProxy:(NSArray<NSString *> *)selectors;
+- (instancetype)initWithTableView:(UITableView *)tableView selectorsToProxy:(NSArray<NSString *> *)selectorsToProxy;
 
 @end
 

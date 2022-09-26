@@ -41,7 +41,7 @@ NSString *_Nullable decrementTweetPosition(NSString *tweetPosition);
  *
  *  @return An array of `TWTRTweet` instances or nil.
  */
-+ (nullable NSArray *)tweetsFromCollectionAPIResponseDictionary:(NSDictionary *)collection;
++ (nullable NSArray *)tweetsFromCollectionAPIResponseDictionary:(NSDictionary *)dictionary;
 
 /**
  *  Creates and array of Tweet model objects from a dictionary of the server
@@ -60,7 +60,7 @@ NSString *_Nullable decrementTweetPosition(NSString *tweetPosition);
  *
  *  @return The ID of the oldest tweet returned or nil.
  */
-+ (nullable NSString *)minPositionFromCollectionAPIResponseDictionary:(NSDictionary *)collection;
++ (nullable NSString *)minPositionFromCollectionAPIResponseDictionary:(NSDictionary *)dictionary;
 
 /**
  *  Return ID of the last (by array index) Tweet in the array.
